@@ -1,0 +1,133 @@
+\documentclass{../cs256-shared/cs256}
+
+\author{Michael B. Gale}
+
+\begin{document}
+{\large University of Warwick, Department of Computer Science} \\[0.1cm]
+{\huge\textbf{Functional Programming} (CS256)} \\[0.1cm]
+{\huge Coursework 1: Mastermind} \\[0.4cm]
+Due at \emph{noon} on \emph{17 November 2017}. \\[0.20cm]
+
+\hrule \vspace{0.5cm}
+
+\textbf{Introduction}
+
+The aim of this coursework is to implement the board game \emph{Mastermind} in Haskell with the help of a skeleton implementation. The game is played by exactly two players: a \emph{codemaker} and a \emph{codebreaker}. At the start of the game, the codemaker thinks of a code consisting of four coloured pegs. For example:
+\begin{center}
+    Yellow, Green, Green, Blue
+\end{center}
+Each colour may be used any number of times in the code, as long as the code has no more than four pegs. The code is \emph{not} disclosed to the codebreaker, whose objective it is to figure out what the code is. The codebreaker does this by taking a guess at what the code might be. For example:
+\begin{center}
+    Green, Red, Blue, Blue
+\end{center}
+The codemaker then scores the guess according to the following rules:
+\begin{itemize}
+    \item For each peg that is in the correct position and has the right colour, the codebreaker scores one coloured marker.
+    \item For each peg that is the right colour but in an incorrect position, the codebreaker scores one white marker.
+\end{itemize}
+For example, for the above guess, the codebreaker would score one white marker for the green peg that is in the wrong place and one coloured marker for the blue peg that is in the right position. The codebreaker has to use this information to try and figure out what the code is. Once the codebreaker scores four coloured markers, the game is over and the two players switch roles.
+
+\textbf{Getting started}
+
+Clone the skeleton code for this coursework on your machine:
+\begin{verbatim}
+$ git clone https://github.com/cs256/cswk1
+\end{verbatim}
+You may wish to verify that the code compiles and that all tests fail by running:
+\begin{verbatim}
+stack test
+\end{verbatim}
+The skeleton code contains a bunch of files, most of which you do not need to touch initially. The most important file is \texttt{src/Game.hs} which contains the definitions you will need to complete to get the game to work. There are some definitions to get you started. For flexibility, the number of pegs per code is defined as:
+\begin{displaymath}
+\begin{array}{lcl}
+\mathit{pegs} & :: & \mathit{Int} \\
+\mathit{pegs} & = & 4
+\end{array}
+\end{displaymath}
+Ideally, all code you write should still work even if this number is modified. We represent colours using characters from \texttt{a} to \texttt{f} and refer to them as symbols:
+\begin{displaymath}
+\begin{array}{l}
+\begin{array}{lcl}
+\mathbf{type}~\mathit{Symbol} & = & \mathit{Char}
+\end{array} \\\\
+\begin{array}{lcl}
+\mathit{symbols} & :: & \hslist{\mathit{Symbol}} \\
+\mathit{symbols} & = & \hslist{\texttt{'a'}..\texttt{'f'}}
+\end{array}
+\end{array}
+\end{displaymath}
+Again, your code should continue to work even if you modify how many symbols there are and which characters are used to represent them. A code is just a list of symbols:
+\begin{displaymath}
+\begin{array}{lcl}
+\mathbf{type}~\mathit{Code} & = & \hslist{\mathit{Symbol}}
+\end{array}
+\end{displaymath}
+Codes are scored using coloured and white markers. We define a type synonym for scores as:
+\begin{displaymath}
+\begin{array}{lcl}
+\mathbf{type}~\mathit{Score} & = & (\mathit{Int}, \mathit{Int})
+\end{array}
+\end{displaymath}
+The first component of the pair represents the number of coloured markers and the second component represents the number of white markers. A player is either human or a computer:
+\begin{displaymath}
+\begin{array}{lcl}
+\mathbf{data}~\mathit{Player} & = & \mathit{Human} \mid \mathit{Computer}
+\end{array}
+\end{displaymath}
+The initial codemaker is defined as:
+\begin{displaymath}
+\begin{array}{lcl}
+\mathit{codemaker} & :: & \mathit{Player} \\
+\mathit{codemaker} & = & \mathit{Human}
+\end{array}
+\end{displaymath}
+You can change this value to determine who goes first. Finally, the computer's first guess is defined as:
+\begin{displaymath}
+\begin{array}{lcl}
+\mathit{firstGuess} & :: & \mathit{Code} \\
+\mathit{firstGuess} & = & \texttt{"aabb"}
+\end{array}
+\end{displaymath}
+You can change this value to change the computer's first guess, but note that other values may cause the computer to take more than five guesses to crack the code.
+
+\textbf{Five-guess algorithm}
+
+Donald Knuth described an algorithm for Mastermind which, for every code with four pegs, takes a computer no more than five guesses to solve. The algorithm works as follows:
+
+\begin{enumerate}
+\item Let $S$ be a set of all possible codes (\texttt{"aaaa"}, \texttt{"aaab"}, $\ldots$, \texttt{"ffff"}).
+\item Let the first guess be (\texttt{"aabb"}).
+\item Get a score from the codemaker.
+\item If the score has four coloured markers, then the guess was correct.
+\item Otherwise, remove all codes from $S$ which would result in a different score. In other words, we know that the code is somewhere in $S$, so it can only be one which results in the same score for the guess as the one we got from the codemaker. 
+\item Find the next guess as follows. If there is only one code left in $S$, use it. Otherwise, for every possible code $c$ (not just those left in $S$):
+\begin{enumerate}
+    \item For each possible score $s$ ($(0,1)$, $(0,2)$, $\ldots$, $(4,0)$):
+    \begin{enumerate}
+        \item Determine how many other codes would be eliminated from $S$. That is, if the next guess were $c$ and it would get a score of $s$, how many codes would that eliminate from $S$ -- i.e. how many codes with different scores would there be?
+    \end{enumerate}
+\end{enumerate}
+Choose the code which would eliminate the most options from $S$. This is calculated in the above step by calculating the sum of eliminations for each code across all the possible scores it might get.
+\item Go to Step 3.
+\end{enumerate}
+
+\textbf{Task}
+
+Complete all definitions in \texttt{src/Game.hs} so that the game functions as described in the Introduction and that the computer never takes more than five guesses as the codebreaker. Running \texttt{stack test} will give you a rough indication of how complete your solution is. Running \texttt{stack bench} will benchmark your code.
+
+\pagebreak
+
+\textbf{Marking \& submission}
+
+This coursework is worth 15\% of the overall module mark. It will be marked out of 100\% as follows:
+\begin{itemize}
+\item 20\% for completeness; whether all parts of the coursework have been attempted
+\item 20\% for correctness; whether all parts that have been attempted are correct
+\item 20\% for elegance; whether definitions are concise and readable, new functions have been introduced where needed, existing library functions have been used when applicable, etc. 
+\item 20\% for performance and efficiency; you will do well here if your functions have sensible asymptotic complexity and perform as little redundant computation as possible (you can test performance by running \texttt{stack bench})
+\item 20\% for improvements and extensions, such as adding additional unit tests, functionality, improved algorithms, etc.
+% documentation?
+\end{itemize}
+Submit a \texttt{.zip} or \texttt{.tar.gz} archive of your whole git repository with the completed work through Tabula by noon on 17 November 2017.
+
+\end{document}
