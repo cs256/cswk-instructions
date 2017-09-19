@@ -9,7 +9,7 @@
 
 % submission details
 \newcommand{\deadlineTime}{noon}
-\newcommand{\deadlineDate}{8 December 2017}
+\newcommand{\deadlineDate}{TBC December 2017}
 \newcommand{\submissionURL}{https://tabula.warwick.ac.uk/coursework/submission/8abd8604-d71b-454d-a0c9-c315cec10a36}
 
 % header configuration
@@ -59,10 +59,13 @@ Clone the skeleton code for this coursework onto your machine:
 \begin{verbatim}
 $ git clone https://github.com/cs256/cswk2
 \end{verbatim}
-To verify that the code compiles and to start the program, you should run and wait for it to print \texttt{Starting web server...} to the console:
+The code should compile out of the box. You can test this by running:
+\begin{verbatim}
+$ stack build
+\end{verbatim}
+To start the program, you should run the following:
 \begin{verbatim}
 $ stack exec scratch-clone
-[a bunch of messages]
 Starting web server...
 Started. Press any key to quit.
 \end{verbatim}
@@ -147,13 +150,13 @@ Running \texttt{stack test} will give you a rough indication of how complete you
 
 This coursework is worth 25\% of the overall module mark. It will be marked out of 100\% as follows:
 \begin{itemize}
-    \item 20\% for \emph{correctness}. You gain full marks here if all parts of the coursework have been attempted and are correct. You may use \texttt{stack test} as a rough indication for whether this is the case, but there are some things the unit tests do not test for, so you should play the game and ensure that everything works as described.
-    \item 20\% for \emph{documented understanding}. You should document your code and explain how it works. You gain full marks if all code is documented and explained in detail.
-    \item 20\% for \emph{elegance}. Definitions should be concise and readable, new functions should be introduced where needed, existing library functions used when applicable, abstractions used where appropriate, etc. 
-    \item 20\% for \emph{performance and efficiency}. You will do well here if your functions have sensible asymptotic complexity and perform as little redundant computation as possible. You can test performance by running \texttt{stack bench}.
-    \item 20\% for \emph{improvements and extensions}; this is an opportunity for you to demonstrate creativity and advanced understanding and could be achieved in many different ways, such as adding additional unit tests, functionality, improved algorithms, etc. You may wish to modify other source files or add new ones. You could also prove some properties about your game on paper. Not every extension will be awarded the full 20\%.
+	\item 20\% for \emph{correctness}. You gain full marks here if all parts of the coursework have been attempted and are correct. You may use \texttt{stack test} as a rough indication for whether this is the case, but there are some things the unit tests do not test for, so you should construct programs in the scratch clone and ensure that everything works as described.
+	\item 20\% for \emph{documented understanding}. You should document your code with comments and explain how it works. You gain full marks if all code is documented and explained sufficiently well so that someone who is unfamiliar with your code can understand it.
+	\item 20\% for \emph{elegance}. Definitions should be concise and readable, new functions should be introduced where needed, existing library functions used when applicable, monads used where possible, etc. 
+	\item 20\% for \emph{performance and efficiency}. You will do well here if you use sensible data structures and your functions perform as little redundant computation as possible. You can test performance by running \texttt{stack bench} on different versions of your code to see how they compare. 
+	\item 20\% for \emph{improvements and extensions}. This is an opportunity for you to demonstrate creativity and advanced understanding. You could achieve this in many different ways, such as adding additional unit tests, functionality, improved algorithms, etc. You may wish to modify \texttt{exe/Main.hs} as well as other source files or even add new ones. You could also prove some properties about your game on paper. The amount of marks awarded will depend on the complexity and creativity of your extension(s) and improvement(s).
 \end{itemize}
-Submit a \texttt{.zip} or \texttt{.tar.gz} archive of your whole git repository with the completed work through Tabula by \deadlineTime\ on \deadlineDate:
+Submit a \texttt{.zip} or \texttt{.tar.gz} archive of the whole, completed project (not just \texttt{Interpreter.hs}) through Tabula by \deadlineTime\ on \deadlineDate:
 
 \begin{center} 
 \url{\submissionURL}
