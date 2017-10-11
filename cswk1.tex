@@ -7,7 +7,7 @@
 
 % submission details
 \newcommand{\deadlineTime}{noon}
-\newcommand{\deadlineDate}{TBC November 2017}
+\newcommand{\deadlineDate}{16 November 2017}
 \newcommand{\submissionURL}{https://tabula.warwick.ac.uk/coursework/submission/a98ab001-55e8-4ab8-87d3-666b6333db42}
 
 % header configuration
@@ -117,7 +117,7 @@ Donald Knuth described an algorithm for Mastermind which, for every code with fo
 \begin{enumerate}
     \item Let $S$ be a set of all possible codes (\texttt{"aaaa"}, \texttt{"aaab"}, $\ldots$, \texttt{"ffff"}).
     \item Let the first guess be \texttt{"aabb"}.
-    \item Get a the codemaker to score your guess.
+    \item Get the codemaker to score your guess.
     \item If the score has four coloured markers, then the guess was correct.
     \item Otherwise, remove all codes from $S$ which would result in a different score. In other words, we know that the code is somewhere in $S$, so it can only be one which results in the same score for the guess as the one we got from the codemaker. 
     \item Find the next guess as follows. If there is only one code left in $S$, use it. Otherwise, for every possible code $c$ (not just those left in $S$):
@@ -139,7 +139,7 @@ Complete all definitions in \texttt{src/Game.hs} so that the game works as descr
 
 \begin{enumerate}
 	\item $\mathit{correctGuess} :: \mathit{Score} \to \mathit{Bool}$\\
-	This function should determine whether a $\mathit{Score}$ value represents a winning guess -- \emph{i.e.} one where the number of black markers matches $\mathit{pegs}$ and there are no white markers.
+	This function should determine whether a $\mathit{Score}$ value represents a winning guess -- \emph{i.e.} one where the number of coloured markers matches $\mathit{pegs}$ and there are no white markers.
 	\item $\mathit{validateCode} :: \mathit{Code} \to \mathit{Bool}$\\
 	This function should determine whether a given $\mathit{Code}$ value is valid: the code should contain $\mathit{pegs}$-many symbols and all the symbols should be elements of $\mathit{symbols}$.
 	\item $\mathit{codes} :: \hslist{\mathit{Code}}$\\
