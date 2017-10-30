@@ -128,6 +128,7 @@ Donald Knuth described an algorithm for Mastermind which, for every code with fo
         \end{enumerate}
     \end{enumerate}
     Choose the code which is guaranteed to eliminate the most options from $S$. This is calculated in the above step by calculating the minimum of eliminations for each code across all the possible scores it might get.
+    In the case of multiple codes producing the same number of guaranteed eliminations, a code which is still a member of $S$ should be picked over one which is not.
     \item Go to Step 3.
 \end{enumerate}
 
